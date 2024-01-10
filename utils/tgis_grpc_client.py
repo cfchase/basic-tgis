@@ -38,7 +38,7 @@ def get_server_certificate(host: str, port: int) -> str:
     return ssl.DER_cert_to_PEM_cert(cert_der)
 
 
-class GrpcClient:
+class TgisGrpcClient:
     def __init__(
         self,
         host: str,
@@ -172,13 +172,3 @@ class GrpcClient:
         raise ValueError(
             f"{certificate=} should be a path to a certificate files or bytes"
         )
-
-
-if __name__ == "__main__":
-    client = GrpcClient(
-        "flan-t5-small-predictor-caikit-testing.apps.aisrhods-wx.8goc.p1.openshiftapps.com",
-        443,
-        verify=False,
-    )
-
-    client.make_request("this is the query text", model_id="flan-t5-small")
