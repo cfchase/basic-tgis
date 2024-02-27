@@ -63,10 +63,13 @@ class TgisGrpcClient:
             self._channel
         )
 
-    def make_request(self, text: str, model_id: str = "flan-t5-small"):
+    def make_request(self, text: str, model_id: str = "flan-t5-small", max_new_tokens = 20):
         request = generation_pb2_grpc.generation__pb2.BatchedGenerationRequest(
             model_id=model_id,
             requests=[generation_pb2_grpc.generation__pb2.GenerationRequest(text=text)],
+            params=generation_pb2_grpc.generation__pb2.Parameters(
+                stopping=generation_pb2_grpc.generation__pb2.StoppingCriteria(max_new_tokens=max_new_tokens)
+            )
         )
         result = self.generation_service_stub.Generate(request=request)
         print(result)
